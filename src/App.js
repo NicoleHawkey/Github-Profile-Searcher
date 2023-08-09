@@ -74,4 +74,3 @@ class App extends Component {
 export default App;
 
 // Functional Components
-// onChange = debounce instead of onClick
