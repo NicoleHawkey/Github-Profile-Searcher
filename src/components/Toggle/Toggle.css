@@ -1,7 +1,6 @@
 .theme-switch-wrapper {
     display: flex;
     align-items: center;
-    z-index: 100;
     position: fixed;
     right: 25px;
     top: 30px;
@@ -50,4 +49,20 @@ input:checked + .slider::before {
 
 .theme-switch .slider {
     background: #d2d3d3;
+}
+
+@media (min-width: 768px) {
+    .theme-switch-wrapper {
+        position: fixed;
+        right: 25px;
+        top: 30px;
+    }
+}
+
+@media (max-width: 768px) {
+    .theme-switch-wrapper {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+    }
 }

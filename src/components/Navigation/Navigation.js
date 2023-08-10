@@ -5,8 +5,8 @@ import "./Navigation.css";
 const Navigation = ({ toggleTheme, theme }) => (
     <div className="navigation">
         <nav>
-            <h1>GitHub Profiles</h1>
-            <Toggle toggleTheme={toggleTheme} theme={theme} />
+            <h1>GitHub Profile Searcher</h1>
+            <Toggle toggleTheme={toggleTheme} theme={theme} className={"toggle"}/>
         </nav>
     </div>
 );
