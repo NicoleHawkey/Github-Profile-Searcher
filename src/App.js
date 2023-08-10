@@ -37,11 +37,20 @@ class App extends Component {
   }
  
   onInputChange = (event) => {
-    this.setState({ searchfield: event.target.value });
+    const inputValue = event.target.value;
+    let errorMessage = null;
+    if (inputValue.trim().includes(' ')) {
+      errorMessage = "Invalid GitHub username. Please ensure there are no spaces.";
+    }
+
+    this.setState({ searchfield: inputValue, error: errorMessage });
   }
 
   onSubmitSearch = async () => {
     const name = this.state.searchfield;
+    if (this.state.error) {
+      return;
+    }
     try {
       const userData = await octokit.request(`GET /users/${name}`, {
           headers: {
