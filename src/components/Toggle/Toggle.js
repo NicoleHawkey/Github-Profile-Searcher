@@ -4,11 +4,11 @@ import "./Toggle.css";
 const Toggle = ({ toggleTheme, theme }) => {
         return (
             <div className={`${theme} theme-switch-wrapper`}>
-                <label className="theme-switch" onClick={toggleTheme}>
+                <label className="theme-switch">
                     <input 
                         type="checkbox" 
                         checked={theme === 'dark'}
-                        onChange={() => { toggleTheme(); }}
+                        onChange={toggleTheme}
                         />
                     <div className="slider round"></div>
                 </label>

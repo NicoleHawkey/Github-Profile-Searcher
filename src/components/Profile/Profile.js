@@ -21,15 +21,15 @@ const Profile = ({ user }) => {
                 <p>Repository Count: {profile?.public_repos}</p>
             </div>
             <div className="repo-container">
-                <p>Top repositories based on forks and stars:</p>
+                <p>Top 4 repositories based on forks and stars:</p>
                 <ul>
                     {topRepos?.map(repo => (
                             <li key={repo.id}>
                                 <a href={repo.html_url} target="_blank" rel="noopener noreferrer">
                                     {repo.name} - Stars: {repo.stargazers_count} Forks: {repo.forks_count}
                                 </a>
-                        </li> 
-                    ))}
+                            </li> 
+                        ))}
                 </ul>
             </div>
         </div> 

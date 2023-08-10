@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import Navigation from './components/Navigation/Navigation';
 import SearchSection from './components/SearchSection/SearchSection';
@@ -8,94 +8,79 @@ import { Octokit } from "octokit";
 const apiKey = process.env.REACT_APP_API_KEY;
 const octokit = new Octokit({ auth: apiKey });
 
-class App extends Component {
-  constructor() {
-    super()
-    const savedTheme = localStorage.getItem('theme') || 'light';
-    this.toggleTheme = this.toggleTheme.bind(this);
-    this.state = {
-      searchfield: '',
-      user: {},
-      error: null,
-      showProfile: false,
-      theme: savedTheme,
-    }
-  }
+function App() {
+  const [searchfield, setSearchfield] = useState('');
+  const [user, setUser] = useState({});
+  const [error, setError] = useState(null);
+  const [showProfile, setShowProfile] = useState(false);
+  const savedTheme = localStorage.getItem('theme') || 'light';
+  const [theme, setTheme] = useState(savedTheme);
 
-  componentDidMount() {
-    document.body.className = this.state.theme;
-    this.toggleTheme();
- }
+  useEffect(() => {
+    document.body.className = theme;
+  }, [theme]);
 
-  toggleTheme = () => {
-    this.setState(prevState => {
-      const newTheme = prevState.theme === 'light' ? 'dark' : 'light';
+  const toggleTheme = () => {
+      const newTheme = theme === 'light' ? 'dark' : 'light';
       document.body.className = newTheme;
       localStorage.setItem('theme', newTheme)
-      return { theme: newTheme };
-    });
-  }
- 
-  onInputChange = (event) => {
-    const inputValue = event.target.value;
-    let errorMessage = null;
-    if (inputValue.trim().includes(' ')) {
-      errorMessage = "Invalid GitHub username. Please ensure there are no spaces.";
+      setTheme(newTheme);
+    }
+  
+  const onInputChange = (event) => {
+      const inputValue = event.target.value;
+      let errorMessage = null;
+      if (inputValue.trim().includes(' ')) {
+        errorMessage = "Invalid GitHub username. Please ensure there are no spaces.";
+      }
+      setSearchfield(inputValue);
+      setError(errorMessage);
     }
 
-    this.setState({ searchfield: inputValue, error: errorMessage });
-  }
-
-  onSubmitSearch = async () => {
-    const name = this.state.searchfield;
-    if (this.state.error) {
-      return;
-    }
-    try {
-      const userData = await octokit.request(`GET /users/${name}`, {
+  const onSubmitSearch = async () => {
+      const name = searchfield;
+      if (error) {
+        return;
+      }
+      try {
+        const userPromise = octokit.request(`GET /users/${name}`, {
+            headers: {
+              'X-GitHub-Api-Version': '2022-11-28'
+            }
+        });
+        const reposPromise = octokit.request(`GET /users/${name}/repos`, {
           headers: {
             'X-GitHub-Api-Version': '2022-11-28'
           }
-        });
-      const reposData = await octokit.request(`GET /users/${name}/repos`, {
-        headers: {
-          'X-GitHub-Api-Version': '2022-11-28'
-        }
-    });
-    this.setState({
-      user: {
+      });
+
+      const [userData, reposData] = await Promise.all([userPromise, reposPromise]);
+
+      setUser({
         profile: userData.data,
         repos: reposData.data
-      },
-      showProfile: true,
-      error: null
-    });
-  } catch (error) {
-      this.setState({
-      error: "Ooops! Looks like there is no such user.",
-      showProfile: false
-    })
-  }
-}
+      });
+      setShowProfile(true);
+      setError(null);
 
-  render() {
-    const { error, showProfile, theme } = this.state;
+    } catch (error) {
+        setError("Ooops! Looks like there is no such user.");
+        setShowProfile(false);
+    }
+}
 
     return (
       <div className="App">
-        <Navigation theme={theme} toggleTheme={this.toggleTheme} />
+        <Navigation theme={theme} toggleTheme={toggleTheme} />
         <SearchSection 
-          onInputChange={this.onInputChange} 
-          onSubmitSearch={this.onSubmitSearch}
-          searchfield={this.state.searchfield}
+          onInputChange={onInputChange} 
+          onSubmitSearch={onSubmitSearch}
+          searchfield={searchfield}
         />
         {error && <div>{error}</div>}
-        {showProfile && <Profile user={this.state.user}/>}
+        {showProfile && <Profile user={user}/>}
      </div>
     );
   }
-}
 
 export default App;
-
-// Functional Components
