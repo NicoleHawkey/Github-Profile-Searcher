@@ -4,6 +4,11 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import "./SearchSection.css";
 
 const SearchSection = ({ onInputChange, onSubmitSearch, searchfield }) => {
+    const handleKeyUp = (e) => {
+        if (e.key === 'Enter') {
+            onSubmitSearch();
+        }
+    }
     return (
         <div className='pa2'>
             <input 
@@ -13,6 +18,7 @@ const SearchSection = ({ onInputChange, onSubmitSearch, searchfield }) => {
                 style={{borderRight: "none"}}
                 onChange={onInputChange}
                 value={searchfield}
+                onKeyUp={handleKeyUp}
             />
             <button 
                 className='searchButton pa3 ba b--light-silver br2 br--right' 

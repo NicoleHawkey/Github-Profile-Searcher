@@ -5,10 +5,23 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: linear-gradient(to left, #dee2ed 0%, rgb(185, 246, 246) 100%);
+
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+.light {
+  background: linear-gradient(to left, #dee2ed 0%, rgb(185, 246, 246) 100%);
+}
+
+.dark {
+  background: linear-gradient(to left, #606166 0%, rgb(2, 14, 25) 100%);
+  color: #fff;
+}
+
+.theme-switch-wrapper {
+  background: none;
 }

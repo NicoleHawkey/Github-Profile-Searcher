@@ -1,0 +1,53 @@
+.theme-switch-wrapper {
+    display: flex;
+    align-items: center;
+    z-index: 100;
+    position: fixed;
+    right: 25px;
+    top: 30px;
+}
+
+.theme-switch {
+    display: inline-block;
+    height: 16px;
+    position: relative;
+    width: 45px;
+}
+
+.slider {
+    background: #d2d3d3;
+    bottom: 0;
+    cursor: pointer;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transition: 0.4s;
+}
+  
+.slider::before {
+    background: #fff;
+    bottom: 2px;
+    content: "";
+    height: 12px;
+    left: 4px;
+    position: absolute;
+    transition: 0.4s;
+    width: 12px;
+}
+  
+input:checked + .slider::before {
+    transform: translateX(26px);
+}
+  
+.slider.round {
+    border-radius: 34px;
+}
+  
+.slider.round::before {
+    border-radius: 50%;
+}
+
+.theme-switch .slider {
+    background: #d2d3d3;
+}

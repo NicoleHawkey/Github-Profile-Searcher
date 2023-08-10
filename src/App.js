@@ -1,25 +1,41 @@
 import React, { Component } from 'react';
 import './App.css';
-import Navigation from './components/Navigation';
+import Navigation from './components/Navigation/Navigation';
 import SearchSection from './components/SearchSection/SearchSection';
 import Profile from './components/Profile/Profile';
 import { Octokit } from "octokit";
 
 const apiKey = process.env.REACT_APP_API_KEY;
-
 const octokit = new Octokit({ auth: apiKey });
 
 class App extends Component {
   constructor() {
     super()
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    this.toggleTheme = this.toggleTheme.bind(this);
     this.state = {
       searchfield: '',
       user: {},
       error: null,
       showProfile: false,
+      theme: savedTheme,
     }
   }
 
+  componentDidMount() {
+    document.body.className = this.state.theme;
+    this.toggleTheme();
+ }
+
+  toggleTheme = () => {
+    this.setState(prevState => {
+      const newTheme = prevState.theme === 'light' ? 'dark' : 'light';
+      document.body.className = newTheme;
+      localStorage.setItem('theme', newTheme)
+      return { theme: newTheme };
+    });
+  }
+ 
   onInputChange = (event) => {
     this.setState({ searchfield: event.target.value });
   }
@@ -54,11 +70,11 @@ class App extends Component {
 }
 
   render() {
-    const { error, showProfile } = this.state;
-    
+    const { error, showProfile, theme } = this.state;
+
     return (
       <div className="App">
-        <Navigation />
+        <Navigation theme={theme} toggleTheme={this.toggleTheme} />
         <SearchSection 
           onInputChange={this.onInputChange} 
           onSubmitSearch={this.onSubmitSearch}
