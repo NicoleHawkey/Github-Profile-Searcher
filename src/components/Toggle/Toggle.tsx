@@ -1,9 +1,15 @@
 import React from "react";
 import "./Toggle.css";
 
-const Toggle = ({ toggleTheme, theme }) => {
+interface ToggleProps {
+    toggleTheme: () => void;
+    theme: string;
+    className?: string;
+}
+
+const Toggle: React.FC<ToggleProps> = ({ toggleTheme, theme, className }) => {
         return (
-            <div className={`${theme} theme-switch-wrapper`}>
+            <div className={`${theme} theme-switch-wrapper ${className}`}>
                 <label className="theme-switch">
                     <input 
                         type="checkbox" 

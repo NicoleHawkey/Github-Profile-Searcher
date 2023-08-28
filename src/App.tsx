@@ -1,20 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, ChangeEvent } from 'react';
 import './App.css';
 import Navigation from './components/Navigation/Navigation';
 import SearchSection from './components/SearchSection/SearchSection';
 import Profile from './components/Profile/Profile';
 import { Octokit } from "octokit";
+import { User } from './types';
 
-const apiKey = process.env.REACT_APP_API_KEY;
+const apiKey: string = process.env.REACT_APP_API_KEY as string;
 const octokit = new Octokit({ auth: apiKey });
 
 function App() {
-  const [searchfield, setSearchfield] = useState('');
-  const [user, setUser] = useState({});
-  const [error, setError] = useState(null);
-  const [showProfile, setShowProfile] = useState(false);
+  const [searchfield, setSearchfield] = useState<string>('');
+  const [user, setUser] = useState<User>({});
+  const [error, setError] = useState<string | null>(null);
+  const [showProfile, setShowProfile] = useState<boolean>(false);
   const savedTheme = localStorage.getItem('theme') || 'light';
-  const [theme, setTheme] = useState(savedTheme);
+  const [theme, setTheme] = useState<string>(savedTheme);
 
   useEffect(() => {
     document.body.className = theme;
@@ -27,9 +28,9 @@ function App() {
       setTheme(newTheme);
     }
   
-  const onInputChange = (event) => {
+  const onInputChange = (event: ChangeEvent<HTMLInputElement>) => {
       const inputValue = event.target.value;
-      let errorMessage = null;
+      let errorMessage: string | null = null;
       if (inputValue.trim().includes(' ')) {
         errorMessage = "Invalid GitHub username. Please ensure there are no spaces.";
       }
@@ -63,7 +64,7 @@ function App() {
       setShowProfile(true);
       setError(null);
 
-    } catch (error) {
+    } catch (error: any) {
         setError("Ooops! Looks like there is no such user.");
         setShowProfile(false);
     }

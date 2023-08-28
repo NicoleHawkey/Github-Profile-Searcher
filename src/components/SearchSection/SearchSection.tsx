@@ -1,10 +1,16 @@
-import React from "react";
+import React, { ChangeEvent, KeyboardEvent } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import "./SearchSection.css";
 
-const SearchSection = ({ onInputChange, onSubmitSearch, searchfield }) => {
-    const handleKeyUp = (e) => {
+interface SearchSectionProps {
+    onInputChange: (event: ChangeEvent<HTMLInputElement>) => void;
+    onSubmitSearch: () => void;
+    searchfield: string;
+}
+
+const SearchSection: React.FC<SearchSectionProps> = ({ onInputChange, onSubmitSearch, searchfield }) => {
+    const handleKeyUp = (e: KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
             onSubmitSearch();
         }

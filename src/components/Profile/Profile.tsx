@@ -1,7 +1,12 @@
 import React from "react";
 import "./Profile.css";
+import { User } from "../../types";
 
-const Profile = ({ user }) => {
+interface ProfileProps {
+    user: User;
+}
+
+const Profile: React.FC<ProfileProps> = ({ user }) => {
     const { profile, repos } = user;
     const sortedRepos = repos?.sort((a, b) =>
         (b.stargazers_count + b.forks_count) - (a.stargazers_count + a.forks_count));
